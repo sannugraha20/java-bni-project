@@ -26,7 +26,7 @@ public class AuthService {
 
     public String register(String username, String password) {
         if (repo.existsById(username)) {
-            logger.warn("Attempt to register existing user: {}", username);
+            logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN USER TERDAFTAR: {}", username);
             return "User already exists";
         }
         User user = new User();
@@ -35,17 +35,18 @@ public class AuthService {
         user.setRole("USER");
         repo.save(user);
 
-        logger.info("User registered successfully: {}", username);
+        logger.warn("PERCOBAAN REGISTER BERHASIL: {}", username);
         return "Registered successfully";
     }
 
     public String login(String username, String password) {
         Optional<User> user = repo.findByUsername(username);
         if (user.isPresent() && encoder.matches(password, user.get().getPasswordHash())) {
-            logger.info("Login success: {}", username);
+            logger.warn("PERCOBAAN LOGIN BERHASIL: {}", username);
             return jwtUtil.generateToken(username, user.get().getRole());
         }
-        logger.warn("Login failed for user: {}", username);
+
+        logger.warn("PERCOBAAN LOGIN GAGAL, USERNAME ATAU PASSWORD SALAH: {}", username);
         return null;
     }
 }
