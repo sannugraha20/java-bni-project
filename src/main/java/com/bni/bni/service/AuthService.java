@@ -6,11 +6,15 @@ import com.bni.bni.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 @Service
 public class AuthService {
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+
     @Autowired
     private UserRepository repo;
 
@@ -22,6 +26,7 @@ public class AuthService {
 
     public String register(String username, String password) {
         if (repo.existsById(username)) {
+            logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN USER TERDAFTAR: {}", username);
             return "User already exists";
         }
         User user = new User();
@@ -29,14 +34,19 @@ public class AuthService {
         user.setPasswordHash(encoder.encode(password));
         user.setRole("USER");
         repo.save(user);
+
+        logger.warn("PERCOBAAN REGISTER BERHASIL: {}", username);
         return "Registered successfully";
     }
 
     public String login(String username, String password) {
         Optional<User> user = repo.findByUsername(username);
         if (user.isPresent() && encoder.matches(password, user.get().getPasswordHash())) {
+            logger.warn("PERCOBAAN LOGIN BERHASIL: {}", username);
             return jwtUtil.generateToken(username, user.get().getRole());
         }
+
+        logger.warn("PERCOBAAN LOGIN GAGAL, USERNAME ATAU PASSWORD SALAH: {}", username);
         return null;
     }
 }
