@@ -1,11 +1,11 @@
-# Gunakan image Java 17 LTS
+# Stage 1: Build JAR dengan Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: Jalankan JAR
 FROM eclipse-temurin:17-jdk
-
-# Argumen untuk file JAR
-ARG JAR_FILE=target/*.jar
-
-# Salin JAR ke dalam container
-COPY ${JAR_FILE} app.jar
-
-# Jalankan Spring Boot
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
