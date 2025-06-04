@@ -8,3 +8,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
+management :
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+    health:
+      show-details: "always"

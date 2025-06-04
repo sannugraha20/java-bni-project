@@ -17,3 +17,26 @@ spec:
           image: adminer:latest
           ports:
             - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness # Endpoint liveness probe
+              port: 8080
+            initialDelaySeconds: 20 # Tunggu 20 detik sebelum cek pertama
+            periodSeconds: 10       # Cek setiap 10 detik
+            failureThreshold: 3     # Gagal 3 kali berturut-turut baru restart Pod
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness # Endpoint readiness probe
+              port: 8080
+            initialDelaySeconds: 30 # Tunggu 30 detik sebelum cek pertama (lebih lama dari liveness jika ada inisialisasi)
+            periodSeconds: 10       # Cek setiap 10 detik
+            failureThreshold: 3     # Gagal 3 kali berturut-turut baru anggap tidak siap
+            successThreshold: 1     # Berhasil 1 kali baru anggap siap
+management :
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+    health:
+      show-details: "always"
+

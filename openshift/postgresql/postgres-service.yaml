@@ -8,3 +8,10 @@ spec:
   ports:
     - port: 5432
       targetPort: 5432
+management :
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+    health:
+      show-details: "always"
