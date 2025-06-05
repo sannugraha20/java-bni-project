@@ -1,6 +1,6 @@
 package com.bni.bni.controller;
 
-import com.bni.bni.service.AuthService;
+import com.bni.bni.service.UserService;
 import com.bni.bni.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    
 
     @Autowired
-    private AuthService authService;
+    private UserService authService;
 
     @Autowired
     private JwtUtil jwtUtil;
