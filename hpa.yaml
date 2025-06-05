@@ -1,0 +1,30 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-springboot-app-hpa # Nama objek HPA
+  namespace: default # Ganti dengan namespace/project Anda
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment # Sesuaikan dengan jenis workload Anda (Deployment atau DeploymentConfig)
+    name: my-springboot-app # Nama Deployment/DeploymentConfig Anda
+  minReplicas: 2 # Jumlah minimum Pod yang harus selalu berjalan
+  maxReplicas: 10 # Jumlah maksimum Pod yang diizinkan
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization # Skala berdasarkan persentase penggunaan dari request
+        averageUtilization: 70 # Target rata-rata penggunaan CPU adalah 70%
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue # Skala berdasarkan nilai rata-rata absolut
+        averageValue: 700Mi # Target rata-rata penggunaan memori adalah 700 MiB per Pod
+  behavior: # Opsional: Mengatur perilaku scaling (misalnya, delay)
+    scaleDown:
+      stabilizationWindowSeconds: 300 # Tunggu 5 menit setelah downscale terakhir
+    scaleUp:
+      stabilizationWindowSeconds: 0 # Bisa langsung upscale jika dibutuhkan
