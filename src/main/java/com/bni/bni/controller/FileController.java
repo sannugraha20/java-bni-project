@@ -54,6 +54,37 @@ public class FileController {
             );
         }
     }
+
+    @GetMapping("/{fileName:.+}")
+    public ResponseEntity<?> getFile(@PathVariable String fileName) {
+        try {
+            Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.status(404).body(
+                        Map.of(
+                                "status", 404,
+                                "message", "File not found"
+                        )
+                );
+            }
+
+            byte[] fileContent = Files.readAllBytes(filePath);
+            return ResponseEntity.ok().body(
+                    Map.of(
+                            "status", 200,
+                            "fileName", fileName,
+                            "fileContent", fileContent
+                    )
+            );
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(
+                    Map.of(
+                            "status", 500,
+                            "message", "Failed to retrieve file: " + e.getMessage()
+                    )
+            );
+        }
+    }
     
 
 
