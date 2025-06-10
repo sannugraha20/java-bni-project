@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         PROJECT_NAME = "sannugraha20-dev"
         BUILD_NAME = "san-odp-project-git"
     }
