@@ -2,12 +2,9 @@ package com.bni.bni.service;
 
 import com.bni.bni.entity.User;
 import com.bni.bni.repository.UserRepository;
-import com.bni.bni.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.List;
 
@@ -15,9 +12,49 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private String username;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String passwordHash;
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    private String role;
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
+    private String emailAddress;
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+    private Boolean isActivate;
+    public Boolean getIsActivate() {
+        return isActivate;
+    }
+    public void setIsActivate(Boolean isActivate) {
+        this.isActivate = isActivate;
+    }
+
+
     public String register(String username, String password) {
-        // TODO: Implement registration logic (e.g., save user to DB)
-        // For now, return a success message
+
         return "User registered successfully";
     }
 

@@ -40,5 +40,20 @@ management :
         include: "health,info"
     health:
       show-details: "always"
+--- 
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: my-pvc
 
-            
+      containers:
+              - name: spring-boot-container
+                image: your-registry/your-spring-boot-image:latest
+                ports:
+                  - containerPort: 8080
+                volumeMounts:
+                  - name: upload-volume
+                    mountPath: /app/uploads  # Lokasi di dalam containevolumes:
+              - name: upload-volume
+                persistentVolumeClaim:
+                  claimName: upload-pvc  # Sesuai nama PVC-mu
