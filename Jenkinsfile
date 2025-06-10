@@ -16,7 +16,8 @@ pipeline {
 
         stage('Deploy to OpenShift') {
             steps {
-                sh "oc rollout restart latest ${BUILD_NAME} -n ${PROJECT_NAME}"
+                // sh "oc rollout latest deployment/${BUILD_NAME} -n ${PROJECT_NAME}"
+                sh "oc rollout status deployment/${BUILD_NAME} -n ${PROJECT_NAME}"
             }
         }
 
