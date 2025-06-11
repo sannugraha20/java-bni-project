@@ -26,6 +26,13 @@ spec:
               value: admin123
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
