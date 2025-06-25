@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: mydb
+            - name: POSTGRES_USER
+              value: admin
+            - name: POSTGRES_PASSWORD
+              value: admin123
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+management :
+  endpoints:
+    web:
+      exposure:
+        include: "health,info"
+    health:
+      show-details: "always"
+--- 
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: my-pvc
+
+      containers:
+              - name: spring-boot-container
+                image: your-registry/your-spring-boot-image:latest
+                ports:
+                  - containerPort: 8080
+                volumeMounts:
+                  - name: upload-volume
+                    mountPath: /app/uploads  # Lokasi di dalam containevolumes:
+              - name: upload-volume
+                persistentVolumeClaim:
+                  claimName: upload-pvc  # Sesuai nama PVC-mu
